@@ -26,7 +26,7 @@
 + stm32f4xx_it.c
 ```c
 /* USER CODE BEGIN Includes */
-	#include "sys.h"
+#include "sys.h"
 /* USER CODE END Includes */
 void SysTick_Handler(void)
 {
@@ -49,7 +49,7 @@ void SysTick_Handler(void)
 + main.c
 ```c
 /* USER CODE BEGIN Includes */
-	#include "sys.h"
+#include "sys.h"
 /* USER CODE END Includes */
 int main(void)
 {
