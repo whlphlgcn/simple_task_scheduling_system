@@ -1,0 +1,28 @@
+--cpu=Cortex-M4.fp.sp
+"simple_task_scheduling_system\startup_stm32f429xx.o"
+"simple_task_scheduling_system\main.o"
+"simple_task_scheduling_system\gpio.o"
+"simple_task_scheduling_system\stm32f4xx_it.o"
+"simple_task_scheduling_system\stm32f4xx_hal_msp.o"
+"simple_task_scheduling_system\sys.o"
+"simple_task_scheduling_system\task.o"
+"simple_task_scheduling_system\stm32f4xx_hal_tim.o"
+"simple_task_scheduling_system\stm32f4xx_hal_tim_ex.o"
+"simple_task_scheduling_system\stm32f4xx_hal_rcc.o"
+"simple_task_scheduling_system\stm32f4xx_hal_rcc_ex.o"
+"simple_task_scheduling_system\stm32f4xx_hal_flash.o"
+"simple_task_scheduling_system\stm32f4xx_hal_flash_ex.o"
+"simple_task_scheduling_system\stm32f4xx_hal_flash_ramfunc.o"
+"simple_task_scheduling_system\stm32f4xx_hal_gpio.o"
+"simple_task_scheduling_system\stm32f4xx_hal_dma_ex.o"
+"simple_task_scheduling_system\stm32f4xx_hal_dma.o"
+"simple_task_scheduling_system\stm32f4xx_hal_pwr.o"
+"simple_task_scheduling_system\stm32f4xx_hal_pwr_ex.o"
+"simple_task_scheduling_system\stm32f4xx_hal_cortex.o"
+"simple_task_scheduling_system\stm32f4xx_hal.o"
+"simple_task_scheduling_system\stm32f4xx_hal_exti.o"
+"simple_task_scheduling_system\system_stm32f4xx.o"
+--library_type=microlib --strict --scatter "simple_task_scheduling_system\simple_task_scheduling_system.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "simple_task_scheduling_system.map" -o simple_task_scheduling_system\simple_task_scheduling_system.axf

@@ -1,3 +1,6 @@
+#ifndef __TASK_H
+#define __TASK_H
+
 #include "main.h"
 
 void task1(void);
@@ -9,4 +12,4 @@ __weak void Task_EnableCallback(uint8_t task_number);
 __weak void Task_OutCallback(uint8_t task_number);
 __weak void Task_InCallback(uint8_t task_number);
 
-
+#endif /* __TASK_H */

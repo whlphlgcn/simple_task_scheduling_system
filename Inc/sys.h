@@ -1,3 +1,6 @@
+#ifndef __SYS_H
+#define __SYS_H
+
 #include "main.h"
 
 #define TASK_NUMBER 3    //任务数量
@@ -26,5 +29,5 @@ void System_TaskOut(uint8_t task_number,uint32_t stop_time);
 void System_TaskDisable(uint8_t task_number);
 void System_TaskEnable(uint8_t task_number);
 
-
+#endif /* __SYS_H */
 
