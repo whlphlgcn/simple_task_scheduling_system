@@ -4,7 +4,7 @@
   * @changedate 2020.09.13
   */
 	
-//至少要include所有的main.c里面的
+//用户include
 #include "main.h"
 #include "gpio.h"
 //下面的是作者写的，必须include！！！

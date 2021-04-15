@@ -80,14 +80,14 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
-	System_Init();
+	System_TaskInit();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-		System_RunTask();
+		System_TaskRun();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

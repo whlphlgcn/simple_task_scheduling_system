@@ -6,11 +6,24 @@
   * @changedate 2020.09.13
   */
 
-//下面的是cubemx生成的，必须include！！！
+//用户include
 #include "main.h"
 //下面的是作者写的，必须include！！！
 #include "sys.h"
 #include "task.h"
+
+typedef struct
+{
+	uint8_t enable_flag;       // 任务是否被开启，任务不被开启无法运行 (非0为任务已经开启)
+	uint16_t interval_time;    // 任务运行间隔时间 (单位ms)
+	uint32_t last_time;        // 任务上一次运行时间 (单位ms)
+	uint8_t ready_flag;        // 任务是否准备好运行 (非0为任务已经开启)
+	uint32_t out_time;         // 任务暂时停止运行多少时间 (单位ms)
+	int32_t usage_tick;        // 任务函数从开始到结束时，滴答定时器内VAL(CNT)自减次数 (详见sys.c里面的 System_RunTask())
+	float usage_time;          // 任务上一次运行时所需的时间，单位为us！单位为us！单位为us！ (计算方法见sys.c里面的 System_RunTask())
+	float usage_percent;       // 任务在1秒内占用cpu的百分比 (计算方法见sys.c里面的 System_RunTask())
+	void (*f)(void);           // 指向该任务需要运行的函数 (不知道怎么指见sys.c里面的 System_Init())
+}TaskStruct;
 
 TaskStruct task_structs[TASK_NUMBER];    //声明任务的结构体数组
 
@@ -19,7 +32,7 @@ TaskStruct task_structs[TASK_NUMBER];    //声明任务的结构体数组
   * @brief 系统初始化，给每一个任务结构体里面的enable_flag,interval_time,task_priority,f赋初值，其他的元素单片机会默认是0
   * @changedate 2020.09.13
   */
-void System_Init()
+void System_TaskInit()
 {
 	task_structs[TASK1].enable_flag=1;
 	task_structs[TASK1].interval_time=500;
@@ -44,7 +57,7 @@ float total_usage_time;    // 这个是此函数运行一次的总时间(单位us)，这里声明成全
 int32_t total_usage_tick_max_in1s;    // total_usage_tick 在某1秒内的最大值
 float total_usage_time_max_in1s;    // total_usage_time 在某1秒内的最大值
 
-void System_RunTask()
+void System_TaskRun()
 {
 	int64_t total_begin_tick = SysTick->VAL - uwTick*(SysTick->LOAD+1);    // 思路同计算 begin_tick
 	
@@ -87,7 +100,7 @@ void System_RunTask()
 	*        每隔1000ms重置一次 total_usage_tick_max_in1s 和 total_usage_time_max_in1s
   * @changedate 2020.09.15
   */
-void System_Update()
+void System_TaskUpdate()
 {
 	for(uint8_t i=0;i<TASK_NUMBER;i++)
 	{
@@ -165,6 +178,57 @@ void System_AllTaskDisable()
 	}
 }
 
+/**
+  * @auther whlphlg
+  * @brief 软件看门狗初始化
+  * @changedate 2021.04.15
+  */
+void System_SoftWatchDogInit(SoftWatchDogStruct *dog,uint32_t time_load,uint8_t default_state)
+{
+	dog->state = default_state;
+	dog->time_load = time_load;
+	dog->time_cnt = dog->time_load;
+}
+
+/**
+  * @auther whlphlg
+  * @brief 软件看门狗喂狗
+  * @changedate 2021.04.15
+  */
+void System_SoftWatchDogFeed(SoftWatchDogStruct *dog)
+{
+	dog->state = 1;
+	dog->time_cnt = dog->time_load;
+}
+
+/**
+  * @auther whlphlg
+  * @brief 更新软件看门狗状态
+  * @changedate 2021.04.15
+  */
+void System_SoftWatchDogUpdate(SoftWatchDogStruct *dog)
+{
+	if(dog->time_cnt > 0)
+	{
+		dog->time_cnt--;
+		dog->state = 1;
+	}
+	else
+	{
+		dog->time_cnt = 0;
+		dog->state = 0;
+	}
+}
+
+/**
+  * @auther whlphlg
+  * @brief 获取软件看门狗状态
+  * @changedate 2021.04.15
+  */
+uint8_t System_GetSoftWatchDogState(SoftWatchDogStruct *dog)
+{
+	return dog->state;
+}
 
 
 
